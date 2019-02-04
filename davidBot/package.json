@@ -1,0 +1,12 @@
+{
+  "name": "david-bot",
+  "version": "0.0.0",
+  "description": "davidBot",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "discord.io": "^2.5.3"
+  }
+}
