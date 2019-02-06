@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a3629c2f-bfeb-4978-ab30-fe38777c3a26</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>server.js</StartupFile>
+    <StartupFile>index.js</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -29,9 +29,45 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="server.js" />
+    <Compile Include="commands\commands.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="commands\google.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="commands\kick.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="commands\trivia.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="events\guildMemberAdd.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="events\ready.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="events\message.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="commands\ping.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="index.js" />
+    <Compile Include=".env">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="data\trivia\History.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="package.json" />
     <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="data\trivia\" />
+    <Folder Include="events\" />
+    <Folder Include="commands\" />
+    <Folder Include="data\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

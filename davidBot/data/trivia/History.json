@@ -1,0 +1,25 @@
+﻿{
+  "questions": [
+    {
+      "q": "In what year did WWII start?",
+      "a": [ "1939" ]
+    },
+    {
+      "q": "In what year did WWI start?",
+      "a": [ "1914" ]
+    },
+    {
+      "q": "Who was the American president during the American civil war?",
+      "a": [ "Abraham Lincoln", "Lincoln" ]
+    },
+    {
+      "q": "In which conflict was the American emancipation proclamation produced?",
+      "a": [ "American Civil War" , "US Civil War", "USA Civil War"]
+    },
+    {
+      "q": "Which Renaissance state united the Polish and Lithuanian crowns and covered much of Eastern Europe?",
+      "a": [ "Polish Lithuanian Commonwealth", "The Polish Lithuanian Commonwealth" ]
+    }
+  ]
+
+}
