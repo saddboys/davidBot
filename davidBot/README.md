@@ -7,3 +7,7 @@ npm
 discord.js
 dotenv
 nodemon
+
+  
+  
+To run do 'npm run dev'
