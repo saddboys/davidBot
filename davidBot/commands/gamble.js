@@ -1,27 +1,64 @@
-﻿module.exports = message => {
+﻿let fs = require('fs');
 
-    var command = message.content.split(" ")
-    var slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":boom:", ":fire:", ":punch: "]
-    // If trivia message is only one sent, return a list of all trivias
+module.exports = message => {
+    // import points data
+    let pointsObj = require('../data/points.json');
 
-    if (command.length === 1) {
-        message.channel.send("Please include a number of points to gamble! Usage: '!gamble 50' ");
-    } else if (isNaN(command[1])) {
-        message.channel.send("Specify a *number* to gamble");
-    } else if (parseInt(command[1]) <= 0 | !Number.isInteger(parseFloat(command[1]))){
-        message.channel.send("You can only gamble a positive integer!");
+    // split input command
+    let command = message.content.split(" ");
+
+    // setup slots
+    let slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":boom:", ":fire:", ":punch: "];
+
+
+    if (typeof pointsObj.users[message.author.id] === 'undefined' || pointsObj.users[message.author.id] === 0) {
+        // if no points, then setup point obj
+        pointsObj.users[message.author.id] = 100;
+        message.reply("You have no points and have been given 100, to gamble please enter the command again");
+        savePointsData(pointsObj);
     } else {
-        var gambledPoints = parseInt(command[1])
-        var pointsObj = require('../data/points.json')
-        if (typeof pointsObj[message.author.id] === 'undefined') {
-            console.log("success")
-            pointsObj[message.author.id].points = 100
-        } 
-        if (pointsObj[message.author.id].points < gamblePoints) {
-            message.channel.send("You do not have enough points to gamble that many!")
-        }
-        
+        if (command.length === 1) {
+            message.channel.reply("Please include a number of points to gamble! Usage: '!gamble 50' ");
 
+        } else if (isNaN(command[1] || parseInt(command[1]) <= 0 || !Number.isInteger(parseFloat(command[1])))){
+            message.channel.reply("You can only gamble a positive integer!");
+
+        } else {
+            // read gambled points number
+            let gambledPoints = parseInt(command[1]);
+
+            // if user has not enough points reply
+            if (pointsObj.users[message.author.id].points < gambledPoints) {
+                message.channel.reply("You do not have enough points to gamble that many!")
+            } else {
+                // setup gamble
+                let gottenPoints = 0;
+                let rng = Math.floor((Math.random() * 100) + 1);
+                let reply;
+                if (rng>=90){
+                    gottenPoints = gambledPoints*3;
+                    reply = "You have rolled " + rng.toString() + " and have gotten " + (gambledPoints*2).toString() + " points"
+                } else if (rng>=60){
+                    gottenPoints = gambledPoints*2;
+                    reply ="You have rolled " + rng.toString() + " and have gotten " + (gambledPoints).toString() + " points"
+                } else if (rng < 60){
+                    gottenPoints = gambledPoints*-1;
+                    reply ="You have rolled " + rng.toString() + " and have lost " + (gambledPoints).toString() + " points"
+                }
+
+                pointsObj.users[message.author.id] = pointsObj.users[message.author.id]+gottenPoints;
+                reply = reply + ". You now have " + pointsObj.users[message.author.id].toString() + " points";
+                message.reply(reply);
+
+                savePointsData(pointsObj);
+            }
+        }
     }
 
-}
+};
+
+let savePointsData = function(pointsObj){
+    let pointsData = JSON.stringify(pointsObj, null, " ");
+    let filename = "D:\\IntellijProjects\\davidBot2\\davidBot\\data\\points.json";
+    fs.writeFileSync(filename, pointsData, (err) => { if (err) throw err; });
+};
