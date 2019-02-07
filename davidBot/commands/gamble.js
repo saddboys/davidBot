@@ -60,9 +60,9 @@ module.exports = message => {
 
 let slotMachine = function(slots){
     let slotsNumber = slots.length - 1;
-    let rng1 = Math.floor((Math.random() * slotsNumber) + 1);
-    let rng2 = Math.floor((Math.random() * slotsNumber) + 1);
-    let rng3 = Math.floor((Math.random() * slotsNumber) + 1);
+    let rng1 = Math.floor((Math.random() * slotsNumber));
+    let rng2 = Math.floor((Math.random() * slotsNumber));
+    let rng3 = Math.floor((Math.random() * slotsNumber));
 
     let gottenSlots = [];
     gottenSlots[0] = slots[rng1];
