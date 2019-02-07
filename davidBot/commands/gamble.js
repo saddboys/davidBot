@@ -8,7 +8,7 @@ module.exports = message => {
     let command = message.content.split(" ");
 
     // setup slots
-    let slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":boom:", ":fire:", ":punch: "];
+    let slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":boom:", ":fire:", ":punch:"];
 
 
     if (typeof pointsObj.users[message.author.id] === 'undefined' || pointsObj.users[message.author.id] === 0) {
@@ -33,21 +33,22 @@ module.exports = message => {
             } else {
                 // setup gamble
                 let gottenPoints = 0;
-                let rng = Math.floor((Math.random() * 100) + 1);
                 let reply;
-                if (rng>=90){
+                let gottenSlots = slotMachine(slots);
+
+                if( gottenSlots[0] === gottenSlots[1] && gottenSlots[1] === gottenSlots[2]){
+                    gottenPoints = gambledPoints*10;
+                    reply = "You have rolled [" + gottenSlots.toString() +"]: Jackpot!! You have gotten " + (gottenPoints).toString() +" points."
+                } else if (gottenSlots[0] === gottenSlots[1] || gottenSlots[1] === gottenSlots[2] || gottenSlots[2] === gottenSlots[0]){
                     gottenPoints = gambledPoints*3;
-                    reply = "You have rolled " + rng.toString() + " and have gotten " + (gambledPoints*2).toString() + " points"
-                } else if (rng>=60){
-                    gottenPoints = gambledPoints*2;
-                    reply ="You have rolled " + rng.toString() + " and have gotten " + (gambledPoints).toString() + " points"
-                } else if (rng < 60){
+                    reply = "You have rolled [" + gottenSlots.toString() +"]: You have gotten " + (gottenPoints).toString() +" points."
+                } else {
                     gottenPoints = gambledPoints*-1;
-                    reply ="You have rolled " + rng.toString() + " and have lost " + (gambledPoints).toString() + " points"
+                    reply = "You have rolled [" + gottenSlots.toString() +"]: You have lost " + (gambledPoints).toString() +" points..."
                 }
 
                 pointsObj.users[message.author.id] = pointsObj.users[message.author.id]+gottenPoints;
-                reply = reply + ". You now have " + pointsObj.users[message.author.id].toString() + " points";
+                reply = reply + " You now have " + pointsObj.users[message.author.id].toString() + " points";
                 message.reply(reply);
 
                 savePointsData(pointsObj);
@@ -57,8 +58,22 @@ module.exports = message => {
 
 };
 
+let slotMachine = function(slots){
+    let slotsNumber = slots.length - 1;
+    let rng1 = Math.floor((Math.random() * slotsNumber) + 1);
+    let rng2 = Math.floor((Math.random() * slotsNumber) + 1);
+    let rng3 = Math.floor((Math.random() * slotsNumber) + 1);
+
+    let gottenSlots = [];
+    gottenSlots[0] = slots[rng1];
+    gottenSlots[1] = slots[rng2];
+    gottenSlots[2] = slots[rng3];
+    return gottenSlots;
+
+};
+
 let savePointsData = function(pointsObj){
     let pointsData = JSON.stringify(pointsObj, null, " ");
-    let filename = "D:\\IntellijProjects\\davidBot2\\davidBot\\data\\points.json";
+    let filename = ".\\data\\points.json";
     fs.writeFileSync(filename, pointsData, (err) => { if (err) throw err; });
 };
