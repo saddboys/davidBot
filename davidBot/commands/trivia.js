@@ -2,7 +2,8 @@
 
 module.exports = (message) => {
 
-    var triviaChosen = null;
+    var currentAnswer
+    var triviaStarted = false
 
     triviaPromise.then(
         function (triviaList) {
@@ -13,11 +14,57 @@ module.exports = (message) => {
             } else if ((triviaList.indexOf(command[1].toLowerCase()) < 0)) {
                 message.channel.send("Sorry! That trivia was not found. The following trivias are available: " + triviaList);
             } else {
-                triviaChosen = command[1];
+
+
+                var triviaChosen = command[1];
+                var trivia = require('../data/trivia/' + triviaChosen + '.json');
+                trivia['currentQuestionNumber'] = 0
+
+                //randomise question order
+                var questionOrder = []
+                for (var i = 0; i < trivia.questions.length; i++) {
+                    questionOrder[i] = i;
+                }
+
+                var randomQuestionOrder = shuffle(questionOrder)
+                trivia['questionOrder'] = randomQuestionOrder
+
+                message.channel.send("Starting trivia! There are a total of " + trivia.questions.length.toString() + " questions in this trivia...")
+
+                triviaStarted = true;
+                chooseQuestion(trivia)
             }
         }
     )
-    return triviaChosen
+
+
+
+    var chooseQuestion = function (trivia) {
+        var currentQuestion = trivia.questions[trivia.questionOrder[trivia.currentQuestionNumber]]
+        trivia.currentQuestionNumber = trivia.currentQuestionNumber++
+        message.channel.send(currentQuestion.q)
+        currentAnswer = currentQuestion.a
+    }
+
+}
+
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
 }
 
 var triviaPromise = new Promise(function (resolve, reject) {
@@ -33,7 +80,6 @@ var triviaPromise = new Promise(function (resolve, reject) {
 
     resolve(triviaList)
 })
-
 
     // Allow reading of !skip to skip questions and !stop to stop the trivia, disable other trivias from beginning in the mean time
 

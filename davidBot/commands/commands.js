@@ -1,12 +1,13 @@
-﻿/*module.exports = message => {
-    commandsList = ""
+﻿module.exports = message => {
+    commandsList = "Commands include"
 
     const fs = require('fs')
 
-    fs.readdir('./events/', (err, files) => {
+    fs.readdir('./commands/', (err, files) => {
         files.forEach(file => {
             commandsList = commandsList + ", !" + file.replace(".js", "")
         })
+        return message.channel.send(commandsList)
     })
-    return message.channel.send(commandsList)
-}*/
+
+}

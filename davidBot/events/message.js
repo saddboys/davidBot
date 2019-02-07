@@ -3,16 +3,16 @@ const ping = require('../commands/ping')
 const google = require('../commands/google')
 const commands = require('../commands/commands')
 const trivia = require('../commands/trivia')
-
+const gamble = require('../commands/gamble')
 module.exports = (client, message) => {
 
 
     contents = message.content;
     user = message.author
-    /*if (checkCommand(message, 'kick')) {
-        return kick(message)
-    } else */if (checkCommand(message, 'ping')) {
+
+    if (checkCommand(message, 'ping')) {
         return ping(message)
+
     } else if (checkCommand(message, "is")) {
         var rng = Math.floor((Math.random() * 2) + 1);
         if (rng === 1) {
@@ -22,16 +22,19 @@ module.exports = (client, message) => {
         }
     } else if (checkCommand(message, 'google')) {
         return google(message)
+
     } else if (checkCommand(message, 'commands')) {
-        //return commands(message)
-    } else if (checkCommand(message, 'trivia')) {
-        //return trivia(message)
-    } else if (checkCommand(message, 'check')) {
-        // console.log(triviaStatus)
+        return commands(message)
+
     } else if (checkCommand(message, 'roll')) {
         var msg = message.content.split(" ")
+        if (!isNaN(msg[1])) {
+            var rng = Math.floor((Math.random() * parseInt(msg[1], 10)) + 1)
+            message.reply("You have rolled " + rng.toString())
+        }
 
-
+    } else if (checkCommand(message, 'gamble')) {
+        return gamble(message)
     }
 }
 

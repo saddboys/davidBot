@@ -9,6 +9,7 @@ fs.readdir('./events/', (err, files) => {
         const eventHandler = require(`./events/${file}`)
         console.log("Loaded: ", file)
         const eventName = file.split('.')[0]
+        console.log(eventName)
         client.on(eventName, (...args) => eventHandler(client, ...args))
     })
 })

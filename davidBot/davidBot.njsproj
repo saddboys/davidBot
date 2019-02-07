@@ -35,6 +35,9 @@
     <Compile Include="commands\google.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="commands\gamble.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="commands\kick.js">
       <SubType>Code</SubType>
     </Compile>
@@ -57,6 +60,9 @@
     <Compile Include=".env">
       <SubType>Code</SubType>
     </Compile>
+    <Content Include="data\points.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="data\trivia\History.json">
       <SubType>Code</SubType>
     </Content>

@@ -2,7 +2,7 @@
     const member = message.mentions.members.first()
 
     if (!member) {
-        return message.reply(`Who are you trying to kick? You must mention a user.`)
+        return message.reply(`Who are you trying to kick?`)
     }
     if (!member.kickable) {
         return message.reply(`I can't kick this user. Sorry!`)
