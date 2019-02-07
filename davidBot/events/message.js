@@ -7,6 +7,9 @@ const gamble = require('../commands/gamble');
 const points = require('../commands/points');
 const is = require('../commands/is');
 const roll = require('../commands/roll')
+
+// promises
+const getTriviaFiles = require('../scripts/getTriviaFiles')
 module.exports = (client, message) => {
 
     let contents = message.content;
@@ -26,6 +29,9 @@ module.exports = (client, message) => {
         return gamble(message)
     } else if (checkCommand(message, 'points')){
         return points(message)
+    } else if (checkCommand(message, 'trivia')){
+        getTriviaFiles.triviaPromise.then(trivia(message))
+        console.log( )
     }
 };
 

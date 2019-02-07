@@ -41,7 +41,7 @@ module.exports = message => {
                     gottenPoints = gambledPoints*10;
                     reply = "You have rolled [" + gottenSlots.toString() +"]: Jackpot!! You have gotten " + (gottenPoints).toString() +" points."
                 } else if (gottenSlots[0] === gottenSlots[1] || gottenSlots[1] === gottenSlots[2] || gottenSlots[2] === gottenSlots[0]){
-                    gottenPoints = gambledPoints*2;
+                    gottenPoints = gambledPoints*3;
                     reply = "You have rolled [" + gottenSlots.toString() +"]: You have gotten " + (gottenPoints).toString() +" points."
                 } else {
                     gottenPoints = gambledPoints*-1;

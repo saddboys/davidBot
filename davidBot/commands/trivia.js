@@ -1,55 +1,40 @@
-﻿const fs = require("fs")
+﻿module.exports = (message, triviaFiles) => {
 
-module.exports = (message) => {
+    let currentAnswer;
 
-    var currentAnswer
-    var triviaStarted = false
-
-    triviaPromise.then(
-        function (triviaList) {
-            var command = message.content.split(" ")
-            // If trivia message is only one sent, return a list of all trivias
-            if (command.length === 1) {
-                message.channel.send("The following trivias are available: " + triviaList);
-            } else if ((triviaList.indexOf(command[1].toLowerCase()) < 0)) {
-                message.channel.send("Sorry! That trivia was not found. The following trivias are available: " + triviaList);
-            } else {
+    let command = message.content.split(" ");
+    // If trivia message is only one sent, return a list of all trivias
+    if (command.length === 1) {
+        message.channel.send("The following trivias are available: " + triviaFiles);
+        return null
+    } else if ((triviaFiles.indexOf(command[1].toLowerCase()) < 0)) {
+        message.channel.send("Sorry! That trivia was not found. The following trivias are available: " + triviaFiles);
+        return null
+    } else {
 
 
-                var triviaChosen = command[1];
-                var trivia = require('../data/trivia/' + triviaChosen + '.json');
-                trivia['currentQuestionNumber'] = 0
+        let triviaChosen = command[1];
+        let trivia = require('../data/trivia/' + triviaChosen + '.json');
+        trivia['currentQuestionNumber'] = 0;
 
-                //randomise question order
-                var questionOrder = []
-                for (var i = 0; i < trivia.questions.length; i++) {
-                    questionOrder[i] = i;
-                }
-
-                var randomQuestionOrder = shuffle(questionOrder)
-                trivia['questionOrder'] = randomQuestionOrder
-
-                message.channel.send("Starting trivia! There are a total of " + trivia.questions.length.toString() + " questions in this trivia...")
-
-                triviaStarted = true;
-                chooseQuestion(trivia)
-            }
+        //randomise question order
+        let questionOrder = [];
+        for (let  i = 0; i < trivia.questions.length; i++) {
+            questionOrder[i] = i;
         }
-    )
 
+        trivia['questionOrder'] = shuffle(questionOrder);
 
-
-    var chooseQuestion = function (trivia) {
-        var currentQuestion = trivia.questions[trivia.questionOrder[trivia.currentQuestionNumber]]
-        trivia.currentQuestionNumber = trivia.currentQuestionNumber++
-        message.channel.send(currentQuestion.q)
-        currentAnswer = currentQuestion.a
+        message.channel.send("Starting trivia! There are a total of " + trivia.questions.length.toString() + " questions in this trivia...")
     }
+    return trivia
 
-}
+};
 
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+
+
+let shuffle = function(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
@@ -65,21 +50,9 @@ function shuffle(array) {
     }
 
     return array;
-}
+};
 
-var triviaPromise = new Promise(function (resolve, reject) {
-    var triviaList = []
 
-    fs.readdir('./data/trivia/', (err, files) => {
-        files.forEach(file => {
-
-            var fileName = file.replace(".json", "")
-            triviaList[triviaList.length] = fileName.toLowerCase()
-        })
-    })
-
-    resolve(triviaList)
-})
 
     // Allow reading of !skip to skip questions and !stop to stop the trivia, disable other trivias from beginning in the mean time
 
