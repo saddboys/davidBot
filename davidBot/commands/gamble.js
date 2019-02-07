@@ -18,10 +18,10 @@ module.exports = message => {
         savePointsData(pointsObj);
     } else {
         if (command.length === 1) {
-            message.channel.reply("Please include a number of points to gamble! Usage: '!gamble 50' ");
+            message.reply("Please include a number of points to gamble! Usage: '!gamble 50' ");
 
         } else if (isNaN(command[1] || parseInt(command[1]) <= 0 || !Number.isInteger(parseFloat(command[1])))){
-            message.channel.reply("You can only gamble a positive integer!");
+            message.reply("You can only gamble a positive integer!");
 
         } else {
             // read gambled points number
@@ -29,7 +29,7 @@ module.exports = message => {
 
             // if user has not enough points reply
             if (pointsObj.users[message.author.id].points < gambledPoints) {
-                message.channel.reply("You do not have enough points to gamble that many!")
+                message.reply("You do not have enough points to gamble that many!")
             } else {
                 // setup gamble
                 let gottenPoints = 0;
