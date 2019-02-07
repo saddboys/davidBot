@@ -64,4 +64,4 @@ typings/
 *.sln
 
 # points file
-points.json
+data/points.json
