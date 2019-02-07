@@ -4,37 +4,28 @@ const google = require('../commands/google');
 const commands = require('../commands/commands');
 const trivia = require('../commands/trivia');
 const gamble = require('../commands/gamble');
+const points = require('../commands/points');
+const is = require('../commands/is');
+const roll = require('../commands/roll')
 module.exports = (client, message) => {
 
-
-    contents = message.content;
-    user = message.author;
+    let contents = message.content;
+    let user = message.author;
 
     if (checkCommand(message, 'ping')) {
         return ping(message)
-
     } else if (checkCommand(message, "is")) {
-        let rng = Math.floor((Math.random() * 2) + 1);
-        if (rng === 1) {
-            message.channel.send(`Yes`)
-        } else {
-            message.channel.send(`No`)
-        }
+        return is(message)
     } else if (checkCommand(message, 'google')) {
         return google(message)
-
     } else if (checkCommand(message, 'commands')) {
         return commands(message)
-
     } else if (checkCommand(message, 'roll')) {
-        let msg = message.content.split(" ");
-        if (!isNaN(msg[1])) {
-            let rng2 = Math.floor((Math.random() * parseInt(msg[1], 10)) + 1);
-            message.reply("You have rolled " + rng2.toString())
-        }
-
+        return roll(message)
     } else if (checkCommand(message, 'gamble')) {
         return gamble(message)
+    } else if (checkCommand(message, 'points')){
+        return points(message)
     }
 };
 
