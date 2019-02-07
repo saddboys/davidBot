@@ -8,14 +8,14 @@ module.exports = message => {
     let command = message.content.split(" ");
 
     // setup slots
-    let slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":boom:", ":fire:", ":punch:"];
+    let slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":boom:", ":fire:", ":punch:", ":seven:", ":fleur_de_lis:"];
 
 
     if (typeof pointsObj.users[message.author.id] === 'undefined' || pointsObj.users[message.author.id] === 0) {
         // if no points, then setup point obj
         pointsObj.users[message.author.id] = 100;
-        message.reply("You have no points and have been given 100, to gamble please enter the command again");
-        savePointsData(pointsObj);
+        message.reply("You have no points and have been given 100; to gamble, please enter the command again");
+
     } else {
         if (command.length === 1) {
             message.reply("Please include a number of points to gamble! Usage: '!gamble 50' ");
@@ -28,7 +28,8 @@ module.exports = message => {
             let gambledPoints = parseInt(command[1]);
 
             // if user has not enough points reply
-            if (pointsObj.users[message.author.id].points < gambledPoints) {
+            if (pointsObj.users[message.author.id] < gambledPoints) {
+                console.log(pointsObj.users[message.author.id].points);
                 message.reply("You do not have enough points to gamble that many!")
             } else {
                 // setup gamble
@@ -40,7 +41,7 @@ module.exports = message => {
                     gottenPoints = gambledPoints*10;
                     reply = "You have rolled [" + gottenSlots.toString() +"]: Jackpot!! You have gotten " + (gottenPoints).toString() +" points."
                 } else if (gottenSlots[0] === gottenSlots[1] || gottenSlots[1] === gottenSlots[2] || gottenSlots[2] === gottenSlots[0]){
-                    gottenPoints = gambledPoints*3;
+                    gottenPoints = gambledPoints*2;
                     reply = "You have rolled [" + gottenSlots.toString() +"]: You have gotten " + (gottenPoints).toString() +" points."
                 } else {
                     gottenPoints = gambledPoints*-1;
@@ -50,10 +51,9 @@ module.exports = message => {
                 pointsObj.users[message.author.id] = pointsObj.users[message.author.id]+gottenPoints;
                 reply = reply + " You now have " + pointsObj.users[message.author.id].toString() + " points";
                 message.reply(reply);
-
-                savePointsData(pointsObj);
             }
         }
+        savePointsData(pointsObj);
     }
 
 };
@@ -75,5 +75,5 @@ let slotMachine = function(slots){
 let savePointsData = function(pointsObj){
     let pointsData = JSON.stringify(pointsObj, null, " ");
     let filename = ".\\data\\points.json";
-    fs.writeFileSync(filename, pointsData, (err) => { if (err) throw err; });
+    fs.writeFile(filename, pointsData, (err) => { if (err) throw err; });
 };
