@@ -62,3 +62,6 @@ typings/
 
 # visual studio file thing
 *.sln
+
+# points file
+points.json
