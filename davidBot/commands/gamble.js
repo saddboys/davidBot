@@ -20,7 +20,7 @@ module.exports = message => {
         if (command.length === 1) {
             message.reply("Please include a number of points to gamble! Usage: '!gamble 50' ");
 
-        } else if (isNaN(command[1] || parseInt(command[1]) <= 0 || !Number.isInteger(parseFloat(command[1])))){
+        } else if (isNaN(command[1]) || parseInt(command[1]) <= 0 || !Number.isInteger(parseFloat(command[1]))){
             message.reply("You can only gamble a positive integer!");
 
         } else {

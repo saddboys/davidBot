@@ -10,14 +10,16 @@ const roll = require('../commands/roll')
 
 // promises
 const getTriviaFiles = require('../scripts/getTriviaFiles')
+
+let currentTrivia;
+let currentAnswer;
+
 module.exports = (client, message) => {
 
-    let contents = message.content;
-    let user = message.author;
 
     if (checkCommand(message, 'ping')) {
         return ping(message)
-    } else if (checkCommand(message, "is")) {
+    } else if (checkCommand(message, "is")||checkCommand(message, "should")||checkCommand(message, "would")||checkCommand(message, "could")) {
         return is(message)
     } else if (checkCommand(message, 'google')) {
         return google(message)
@@ -30,8 +32,31 @@ module.exports = (client, message) => {
     } else if (checkCommand(message, 'points')){
         return points(message)
     } else if (checkCommand(message, 'trivia')){
-        getTriviaFiles.triviaPromise.then(trivia(message))
-        console.log( )
+        if (checkCommand(message, 'trivia stop')){
+            currentTrivia = undefined;
+        } else {
+            getTriviaFiles.triviaPromise
+                .then(function (triviaFiles) {
+                    currentTrivia = trivia.triviaGetPromise(triviaFiles, message);
+                })
+                .then(function (){
+
+                    currentAnswer = trivia.triviaAskQuestion(message, currentTrivia);
+
+                })
+        }
+    } else if (currentTrivia !== undefined && currentAnswer.includes(message.content.toLowerCase())){
+        currentTrivia.channel.send("Correct! " + message.author + " got the right answer.");
+        currentTrivia.currentQuestionNumber++;
+        currentAnswer = trivia.triviaAskQuestion(message, currentTrivia);
+
+        if (currentAnswer === undefined){
+            currentTrivia = undefined;
+        }
+
+    } else if (checkCommand(message, 'check')){
+        console.log(currentTrivia);
+        console.log(currentAnswer);
     }
 };
 

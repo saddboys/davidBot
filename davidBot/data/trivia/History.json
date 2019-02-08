@@ -10,15 +10,15 @@
     },
     {
       "q": "Who was the American president during the American civil war?",
-      "a": [ "Abraham Lincoln", "Lincoln" ]
+      "a": [ "abraham lincoln", "lincoln" ]
     },
     {
       "q": "In which conflict was the American emancipation proclamation produced?",
-      "a": [ "American Civil War" , "US Civil War", "USA Civil War"]
+      "a": [ "american civil war" , "us civil war", "usa civil war"]
     },
     {
       "q": "Which Renaissance state united the Polish and Lithuanian crowns and covered much of Eastern Europe?",
-      "a": [ "Polish Lithuanian Commonwealth", "The Polish Lithuanian Commonwealth", "Crown of the Kingdom of Poland and the Grand Duchy of Lithuania", "Polish-Lithuanian Commonwealth", "The Polish-Lithuanian Commonwealth" ]
+      "a": [ "polish lithuanian commonwealth", "the polish lithuanian commonwealth", "crown of the kingdom of poland and the grand duchy of lithuania", "polish-lithuanian commonwealth", "the polish-lithuanian commonwealth" ]
     }
   ]
 
