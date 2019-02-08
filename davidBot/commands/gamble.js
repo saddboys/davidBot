@@ -14,10 +14,9 @@ module.exports = message => {
     let slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":boom:", ":fire:", ":punch:", ":seven:", ":fleur_de_lis:"];
 
 
-    if (typeof pointsObj.users[message.author.id] === 'undefined' || pointsObj.users[message.author.id] === 0) {
+    if (typeof pointsObj.users[message.author] === 'undefined' || pointsObj.users[message.author] === 0) {
         // if no points, then setup point obj
-        //pointsObj.users[message.author.id] = 100;
-        addPoints.addPoints(message.author.id, 100);
+        addPoints.addPoints(message.author, 100);
         message.reply("You have no points and have been given 100; to gamble, please enter the command again");
 
     } else {
@@ -32,8 +31,8 @@ module.exports = message => {
             let gambledPoints = parseInt(command[1]);
 
             // if user has not enough points reply
-            if (pointsObj.users[message.author.id] < gambledPoints) {
-                console.log(pointsObj.users[message.author.id].points);
+            if (pointsObj.users[message.author] < gambledPoints) {
+                console.log(pointsObj.users[message.author].points);
                 message.reply("You do not have enough points to gamble that many!")
             } else {
                 // setup gamble
@@ -52,8 +51,8 @@ module.exports = message => {
                     reply = "You have rolled [" + gottenSlots.toString() +"]: You have lost " + (gambledPoints).toString() +" points..."
                 }
 
-                addPoints.addPoints(message.author.id, gottenPoints);
-                reply = reply + " You now have " + (pointsObj.users[message.author.id]).toString() + " points";
+                addPoints.addPoints(message.author, gottenPoints);
+                reply = reply + " You now have " + (pointsObj.users[message.author]).toString() + " points";
                 message.reply(reply);
             }
         }

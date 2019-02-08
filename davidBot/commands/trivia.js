@@ -1,4 +1,4 @@
-﻿
+﻿const addPoints = require('../scripts/addPoints')
 
 let triviaGetPromise = function(triviaFiles, message) {
 
@@ -12,7 +12,7 @@ let triviaGetPromise = function(triviaFiles, message) {
 
 
             let triviaChosen = command[1];
-            let trivia = require('../data/trivia/' + triviaChosen + '.json');
+            let trivia = require('../../data/trivia/' + triviaChosen + '.json');
             trivia['currentQuestionNumber'] = 0;
 
             //randomise question order
@@ -51,6 +51,7 @@ let triviaCorrectQuestion = function(message, trivia) {
 let triviaFinished = function (trivia){
     let winner = Object.keys(trivia.score).reduce((a, b) => trivia.score[a] > trivia.score[b] ? a : b);
     trivia.channel.send(winner + " has won the trivia! They have won 1000 points")
+    addPoints.addPoints(winner,1000)
 
 };
 
