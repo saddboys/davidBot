@@ -6,7 +6,7 @@ const trivia = require('../commands/trivia');
 const gamble = require('../commands/gamble');
 const points = require('../commands/points');
 const is = require('../commands/is');
-const roll = require('../commands/roll')
+const roll = require('../commands/roll');
 
 // promises
 const getTriviaFiles = require('../scripts/getTriviaFiles')
@@ -33,28 +33,27 @@ module.exports = (client, message) => {
         return points(message)
     } else if (checkCommand(message, 'trivia')){
         if (checkCommand(message, 'trivia stop')){
+            message.channel.send("Stopping trivia...");
             currentTrivia = undefined;
+            currentAnswer = undefined;
         } else {
             getTriviaFiles.triviaPromise
                 .then(function (triviaFiles) {
                     currentTrivia = trivia.triviaGetPromise(triviaFiles, message);
                 })
                 .then(function (){
-
                     currentAnswer = trivia.triviaAskQuestion(message, currentTrivia);
-
                 })
         }
     } else if (currentTrivia !== undefined && currentAnswer.includes(message.content.toLowerCase())){
-        currentTrivia.channel.send("Correct! " + message.author + " got the right answer.");
-        currentTrivia.currentQuestionNumber++;
+        currentTrivia = trivia.triviaCorrectQuestion(message,currentTrivia);
         currentAnswer = trivia.triviaAskQuestion(message, currentTrivia);
 
         if (currentAnswer === undefined){
             currentTrivia = undefined;
         }
 
-    } else if (checkCommand(message, 'check')){
+    } else if (checkCommand(message, 'status')){
         console.log(currentTrivia);
         console.log(currentAnswer);
     }

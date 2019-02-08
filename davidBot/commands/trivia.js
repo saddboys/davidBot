@@ -21,8 +21,10 @@ let triviaGetPromise = function(triviaFiles, message) {
                 questionOrder[i] = i;
             }
 
+            //setup fields
             trivia['questionOrder'] = shuffle(questionOrder);
             trivia['channel'] = message.channel;
+            trivia['score']={};
 
             message.channel.send("Starting trivia! There are a total of " + trivia.questions.length.toString() + " questions in this trivia...")
 
@@ -30,18 +32,42 @@ let triviaGetPromise = function(triviaFiles, message) {
         }
 };
 
+
+let triviaCorrectQuestion = function(message, trivia) {
+    trivia.channel.send("Correct! " + message.author + " got the right answer.");
+    //tick up question number
+    trivia.currentQuestionNumber++;
+    //add score
+    if (trivia.score[message.author] === undefined) {
+        trivia.score[message.author] = 1
+
+    } else {
+        trivia.score[message.author]++
+    }
+    return trivia
+
+};
+
+let triviaFinished = function (trivia){
+    let winner = Object.keys(trivia.score).reduce((a, b) => trivia.score[a] > trivia.score[b] ? a : b);
+    trivia.channel.send(winner + " has won the trivia! They have won 1000 points")
+
+};
+
 let triviaAskQuestion = function(message, trivia) {
 
+    //load next question
     let currentQuestionID = trivia.questionOrder[trivia.currentQuestionNumber];
-    console.log(trivia.questionOrder.length)
     if (trivia.currentQuestionNumber < trivia.questionOrder.length) {
         let question = trivia.questions[currentQuestionID];
         trivia.channel.send((trivia.currentQuestionNumber + 1).toString() + ". " + question.q)
         return question.a;
     } else {
-        trivia.channel.send("You have finished the trivia!");
+        triviaFinished(trivia);
+        //if no more questions
         return undefined
     }
+
 
 };
 
@@ -67,6 +93,7 @@ let shuffle = function(array) {
 
 exports.triviaGetPromise = triviaGetPromise;
 exports.triviaAskQuestion = triviaAskQuestion;
+exports.triviaCorrectQuestion = triviaCorrectQuestion;
 
     // Allow reading of !skip to skip questions and !stop to stop the trivia, disable other trivias from beginning in the mean time
 
