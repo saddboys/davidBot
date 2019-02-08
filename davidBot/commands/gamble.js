@@ -2,7 +2,10 @@
 
 module.exports = message => {
     // import points data
-    let pointsObj = require('../data/points.json');
+    let pointsObj = require('../../data/points.json');
+
+    //import scripts
+    let addPoints = require('../scripts/addPoints');
 
     // split input command
     let command = message.content.split(" ");
@@ -13,7 +16,8 @@ module.exports = message => {
 
     if (typeof pointsObj.users[message.author.id] === 'undefined' || pointsObj.users[message.author.id] === 0) {
         // if no points, then setup point obj
-        pointsObj.users[message.author.id] = 100;
+        //pointsObj.users[message.author.id] = 100;
+        addPoints.addPoints(message.author.id, 100);
         message.reply("You have no points and have been given 100; to gamble, please enter the command again");
 
     } else {
@@ -48,12 +52,11 @@ module.exports = message => {
                     reply = "You have rolled [" + gottenSlots.toString() +"]: You have lost " + (gambledPoints).toString() +" points..."
                 }
 
-                pointsObj.users[message.author.id] = pointsObj.users[message.author.id]+gottenPoints;
-                reply = reply + " You now have " + pointsObj.users[message.author.id].toString() + " points";
+                addPoints.addPoints(message.author.id, gottenPoints);
+                reply = reply + " You now have " + (pointsObj.users[message.author.id]).toString() + " points";
                 message.reply(reply);
             }
         }
-        savePointsData(pointsObj);
     }
 
 };
@@ -74,6 +77,6 @@ let slotMachine = function(slots){
 
 let savePointsData = function(pointsObj){
     let pointsData = JSON.stringify(pointsObj, null, " ");
-    let filename = ".\\data\\points.json";
+    let filename = './../data/points.json';
     fs.writeFile(filename, pointsData, (err) => { if (err) throw err; });
 };

@@ -1,5 +1,5 @@
 module.exports =  message => {
-    let pointsObj = require('../data/points.json');
+    let pointsObj = require('../../data/points.json');
 
     if (typeof pointsObj.users[message.author.id] === 'undefined' || pointsObj.users[message.author.id] === 0) {
         message.reply("You have no points, please enter command !gamble to gain some points");

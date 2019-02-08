@@ -5,7 +5,7 @@ let triviaPromise = function() {
 
     return new Promise(function (resolve, reject) {let triviaList = [];
 
-        fs.readdir('./data/trivia/', (err, files) => {
+        fs.readdir('./../data/trivia/', (err, files) => {
             files.forEach(file => {
 
                 let fileName = file.replace(".json", "");
@@ -18,4 +18,4 @@ let triviaPromise = function() {
 
 };
 
-exports.triviaPromise = triviaPromise()
+exports.triviaPromise = triviaPromise();
