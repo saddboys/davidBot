@@ -15,6 +15,58 @@
     {
       "q": "In which conflict was the American emancipation proclamation produced?",
       "a": [ "american civil war" , "us civil war", "usa civil war"]
+    },
+    {
+      "q": "In what year was the fall of Constantinople to the Ottoman empire?",
+      "a": ["1453"]
+    },
+    {
+      "q": "What was the territory given to Hitler's Germany at the 1938 Munich conference from Czechoslovakia?",
+      "a": ["sudetenland", "the sudetenland"]
+    },
+    {
+      "q": "What German state went on to lead the Germans in the defeat France in 1870 to unite Germany?",
+      "a": ["prussia"]
+    },
+    {
+      "q": "Which battle within the Second World War saw the destruction of the Japanese carriers Akagi, Kaga, Hiryuu and Soryuu?",
+      "a": ["midway", "battle of midway"]
+    },
+    {
+      "q": "In which battle did William the Bastard of Normandy defeat the King Harold Godwinson of England for the crown of England?",
+      "a": ["hastings", "battle of hastings"]
+    },
+    {
+      "q": "What war pitted Roman politicians Octavian against Mark Antony to decide the final fate of the Roman Republic?",
+      "a": ["the final war of the roman republic", "final war of the roman republic", "antony's civil war", "antonys civil war", "the war between antony and octavian", "war between antony and octavian"]
+    },
+    {
+      "q": "What was Roman politician Octavian called after his victory over Mark Antony for the Roman Republic?",
+      "a": ["augustus"]
+    },
+    {
+      "q": "On what island was Napoleon born?",
+      "a": ["corsica"]
+    },
+    {
+      "q": "Which dynasty succeeded the Ming in China to become the final imperial dynasty of China?",
+      "a": ["qing"]
+    },
+    {
+      "q": "Which dynasty was the first imperial dynasty in China, uniting the Chinese warring states into one empire?",
+      "a": ["qin"]
+    },
+    {
+      "q": "The Winter war (1939 - 1940) pitted the Soviet Union against which minor European Country?",
+      "a": ["finland"]
+    },
+    {
+      "q": "Which famous Admiral served the Sino-Korean coalition during the Imjin War against Japan?",
+      "a": ["yi", "admiral yi", "yi sun-shin", "yi sun shin", "admiral yi sun shin", "admiral yi sun-shin"]
+    },
+    {
+      "q": "Which city was the capital of the united Umayyad state which ruled over Spain (756 - 1031)",
+      "a": ["cordoba"]
     }
   ]
 
