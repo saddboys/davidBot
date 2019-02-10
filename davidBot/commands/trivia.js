@@ -11,7 +11,7 @@ let triviaGetPromise = function(message, triviaFiles) {
         } else if ((triviaFiles.indexOf(command[1].toLowerCase()) < 0)) {
             message.channel.send("Sorry! That trivia was not found. The following trivias are available: " + triviaFiles);
         // If trivia length is not a number, return instructions
-        } else if ((command.length >= 3) && ((isNaN(command[2])) || (parseInt(command[2]) <= 0))){
+        } else if ((command.length >= 3) && (((isNaN(command[2])) || (parseInt(command[2]) <= 0)) && command[2] !== "all")){
             message.channel.send("The specified trivia length must be positive integer!!")
         } else {
 
@@ -32,9 +32,9 @@ let triviaGetPromise = function(message, triviaFiles) {
             trivia['score']={};
 
             //get question length
-            if ((command.length >= 3) && (!isNaN(command[2]))){
+            if ((command.length >= 3) && (!isNaN(command[2])) && (parseInt(command[2]) <= trivia.questionOrder.length)){
                 trivia['triviaLength'] = parseInt(command[2]);
-            } else if (command[2] === "all"){
+            } else if ((command[2] === "all") || ((!isNaN(command[2]) && (parseInt(command[2]) > trivia.questionOrder.length)))){
                 trivia['triviaLength'] = trivia.questionOrder.length;
             } else {
                 if (trivia.questionOrder.length < 10) {
