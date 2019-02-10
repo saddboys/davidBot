@@ -1,7 +1,7 @@
 ﻿module.exports = message => {
-    commandsList = "Commands include"
+    let commandsList = "Commands include";
 
-    const fs = require('fs')
+    const fs = require('fs');
 
     fs.readdir('./commands/', (err, files) => {
         files.forEach(file => {
