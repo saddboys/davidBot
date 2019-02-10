@@ -12,10 +12,9 @@ module.exports = message => {
 
     // setup slots
     let slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":boom:", ":fire:", ":punch:", ":seven:", ":fleur_de_lis:"];
-
-
     if (typeof pointsObj.users[message.author] === 'undefined' || pointsObj.users[message.author] === 0) {
         // if no points, then setup point obj
+
         addPoints.addPoints(message.author, 100);
         message.reply("You have no points and have been given 100; to gamble, please enter the command again");
 
@@ -61,7 +60,7 @@ module.exports = message => {
 };
 
 let slotMachine = function(slots){
-    let slotsNumber = slots.length - 1;
+    let slotsNumber = slots.length;
     let rng1 = Math.floor((Math.random() * slotsNumber));
     let rng2 = Math.floor((Math.random() * slotsNumber));
     let rng3 = Math.floor((Math.random() * slotsNumber));
