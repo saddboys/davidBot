@@ -9,7 +9,7 @@ const is = require('../commands/is');
 const roll = require('../commands/roll');
 
 // promises
-const getTriviaFiles = require('../scripts/getTriviaFiles')
+const getTriviaFiles = require('../scripts/getTriviaFiles');
 
 let currentTrivia;
 let currentAnswer;
@@ -39,10 +39,10 @@ module.exports = (client, message) => {
         } else {
             getTriviaFiles.triviaPromise
                 .then(function (triviaFiles) {
-                    currentTrivia = trivia.triviaGetPromise(triviaFiles, message);
+                    currentTrivia = trivia.triviaGetPromise(message, triviaFiles);
                 })
                 .then(function (){
-                    currentAnswer = trivia.triviaAskQuestion(message, currentTrivia);
+                    currentAnswer = trivia.triviaAskQuestion(currentTrivia);
                 })
         }
     } else if (currentTrivia !== undefined && currentAnswer.includes(message.content.toLowerCase())){

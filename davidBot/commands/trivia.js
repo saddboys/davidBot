@@ -1,13 +1,18 @@
 ﻿const addPoints = require('../scripts/addPoints')
 
-let triviaGetPromise = function(triviaFiles, message) {
+let triviaGetPromise = function(message, triviaFiles) {
 
         let command = message.content.split(" ");
         // If trivia message is only one sent, return a list of all trivias
         if (command.length === 1) {
+            message.channel.send("Usage: !trivia [trivia topic] [trivia length]");
             message.channel.send("The following trivias are available: " + triviaFiles);
+        // If trivia does not exist, return list of trivias
         } else if ((triviaFiles.indexOf(command[1].toLowerCase()) < 0)) {
             message.channel.send("Sorry! That trivia was not found. The following trivias are available: " + triviaFiles);
+        // If trivia length is not a number, return instructions
+        } else if ((command.length >= 3) && ((isNaN(command[2])) || (parseInt(command[2]) <= 0))){
+            message.channel.send("The specified trivia length must be positive integer!!")
         } else {
 
 
@@ -26,7 +31,20 @@ let triviaGetPromise = function(triviaFiles, message) {
             trivia['channel'] = message.channel;
             trivia['score']={};
 
-            message.channel.send("Starting trivia! There are a total of " + trivia.questions.length.toString() + " questions in this trivia...")
+            //get question length
+            if ((command.length >= 3) && (!isNaN(command[2]))){
+                trivia['triviaLength'] = parseInt(command[2]);
+            } else if (command[2] === "all"){
+                trivia['triviaLength'] = trivia.questionOrder.length;
+            } else {
+                if (trivia.questionOrder.length < 10) {
+                    trivia['triviaLength'] = trivia.questionOrder.length;
+                } else {
+                    trivia['triviaLength'] = 10;
+                }
+            }
+
+            message.channel.send("Starting trivia! There are a total of " + trivia.triviaLength + " questions in this trivia...");
 
             return trivia;
         }
@@ -49,24 +67,39 @@ let triviaCorrectQuestion = function(message, trivia) {
 };
 
 let triviaFinished = function (trivia){
-    let winner = Object.keys(trivia.score).reduce((a, b) => trivia.score[a] > trivia.score[b] ? a : b);
-    trivia.channel.send(winner + " has won the trivia! They have won 1000 points")
-    addPoints.addPoints(winner,1000)
+    //create array of sorted users by points
+    let sortable = [];
+    for (let user in trivia.score) {
+        sortable.push([user, trivia.score[user]]);
+    }
+    sortable.sort(function(a, b) {
+        return a[1] - b[1];
+    });
+
+    //get the winner/2nd/3rd place
+    let winner = sortable[0][0];
+    let winnerScore = sortable[0][1];
+
+
+    trivia.channel.send(winner + " has won the trivia with a score of " + winnerScore.toString() +"! They have won " + (100*trivia.triviaLength).toString() + " points");
+    addPoints.addPoints(winner,(100*trivia.triviaLength))
 
 };
 
-let triviaAskQuestion = function(message, trivia) {
+let triviaAskQuestion = function(trivia) {
+    if (trivia !== undefined) {
 
-    //load next question
-    let currentQuestionID = trivia.questionOrder[trivia.currentQuestionNumber];
-    if (trivia.currentQuestionNumber < trivia.questionOrder.length) {
-        let question = trivia.questions[currentQuestionID];
-        trivia.channel.send((trivia.currentQuestionNumber + 1).toString() + ". " + question.q)
-        return question.a;
-    } else {
-        triviaFinished(trivia);
-        //if no more questions
-        return undefined
+        //load next question
+        let currentQuestionID = trivia.questionOrder[trivia.currentQuestionNumber];
+        if (trivia.currentQuestionNumber < trivia.triviaLength) {
+            let question = trivia.questions[currentQuestionID];
+            trivia.channel.send((trivia.currentQuestionNumber + 1).toString() + ". " + question.q);
+            return question.a;
+        } else {
+            triviaFinished(trivia);
+            //if no more questions
+            return undefined
+        }
     }
 
 
