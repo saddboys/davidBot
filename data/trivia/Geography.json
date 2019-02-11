@@ -1,7 +1,7 @@
 {
   "questions": [
     {
-      "q": "What is the name of the large island that lies to the south of Italy",
+      "q": "What is the name of the large island that lies to the south of Italy?",
       "a": [ "sicily" ]
     },
     {
@@ -9,7 +9,7 @@
       "a": [ "scandinavia" ]
     },
     {
-      "q": "What mountain range separates India and China",
+      "q": "What mountain range separates India and China?",
       "a": [ "himalaya", "himalayas" ]
     },
     {
@@ -17,11 +17,11 @@
       "a": [ "ural", "urals" ]
     },
     {
-      "q": "Name one country which occupies the low countries?",
+      "q": "Name one country which occupies the low countries.",
       "a": [ "netherlands", "the netherlands", "belgium", "luxembourg" ]
     },
     {
-      "q": "What is the sea that separates Europe from Africa",
+      "q": "What is the sea that separates Europe from Africa?",
       "a": [ "mediterranean","the mediterranean", "mediterranean sea"]
     },
     {

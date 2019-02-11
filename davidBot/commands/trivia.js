@@ -70,7 +70,6 @@ let triviaCorrectQuestion = function(message, trivia) {
 
 
 let triviaAskQuestion = function(trivia) {
-    if (trivia !== undefined) {
 
         //load next question
         let currentQuestionID = trivia.questionOrder[trivia.currentQuestionNumber];
@@ -83,7 +82,7 @@ let triviaAskQuestion = function(trivia) {
             //if no more questions
             return undefined
         }
-    }
+
 
 
 };
@@ -109,6 +108,10 @@ let triviaFinished = function (trivia){
 
 };
 
+let triviaStop = function(message){
+    message.channel.send("Stopping trivia...");
+    return undefined;
+};
 
 let shuffle = function(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
@@ -129,6 +132,7 @@ let shuffle = function(array) {
     return array;
 };
 
+exports.triviaStop = triviaStop;
 exports.triviaGet = triviaGet;
 exports.triviaAskQuestion = triviaAskQuestion;
 exports.triviaCorrectQuestion = triviaCorrectQuestion;

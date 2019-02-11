@@ -1,6 +1,4 @@
-﻿let fs = require('fs');
-
-module.exports = message => {
+﻿module.exports = message => {
     // import points data
     let pointsObj = require('../../data/points.json');
 
@@ -22,12 +20,17 @@ module.exports = message => {
         if (command.length === 1) {
             message.reply("Please include a number of points to gamble! Usage: '!gamble 50' ");
 
-        } else if (isNaN(command[1]) || parseInt(command[1]) <= 0 || !Number.isInteger(parseFloat(command[1]))){
+        } else if ((command[1]!=="all" && isNaN(command[1])) || parseInt(command[1]) <= 0 || !Number.isInteger(parseFloat(command[1]))){
             message.reply("You can only gamble a positive integer!");
 
         } else {
             // read gambled points number
-            let gambledPoints = parseInt(command[1]);
+            let gambledPoints;
+            if (command[1]!=="all") {
+                gambledPoints = parseInt(command[1]);
+            } else {
+                gambledPoints = pointsObj.users[message.author];
+            }
 
             // if user has not enough points reply
             if (pointsObj.users[message.author] < gambledPoints) {
@@ -56,7 +59,6 @@ module.exports = message => {
             }
         }
     }
-
 };
 
 let slotMachine = function(slots){
