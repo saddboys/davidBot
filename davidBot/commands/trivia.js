@@ -3,6 +3,18 @@ const fs = require('fs');
 
 let currentTrivia;
 
+let triviaProcessor = function(message){
+    if (message.content.startsWith('!trivia stop')){
+        triviaStop(message);
+    } else {
+        triviaStart(message);
+    }
+};
+
+/**
+ * Sets up the trivia object to one chosen by user
+ * @param message - the command input by the user, beginning with !trivia
+ */
 let triviaStart = function(message){
     triviaPromise()
         .then(function (triviaFiles) {
@@ -15,6 +27,10 @@ let triviaStart = function(message){
         })
 };
 
+/**
+ * A promise which gets all the  files within the trivia promise directory
+ * @returns {Promise<any>} - the list of all trivias in the trivia directory
+ */
 let triviaPromise = function() {
 
     return new Promise(function (resolve, reject) {let triviaList = [];
@@ -29,6 +45,12 @@ let triviaPromise = function() {
     });
 };
 
+/**
+ * reads the command given by the trivia to set up the trivia chosen
+ * @param message - command provided by the user
+ * @param triviaFiles - list of all trivia files within the database
+ * @returns {*}
+ */
 let triviaGet = function(message, triviaFiles) {
 
         let command = message.content.split(" ");
@@ -79,6 +101,11 @@ let triviaGet = function(message, triviaFiles) {
         }
 };
 
+/**
+ * should be run whenever the user provides a correct answer
+ * assigns the score to the user who answered the question
+ * @param message - command provided by the user
+ */
 let triviaCorrectQuestion = function(message) {
     currentTrivia.channel.send("Correct! " + message.author + " got the right answer.");
     //tick up question number
@@ -90,29 +117,35 @@ let triviaCorrectQuestion = function(message) {
     } else {
         currentTrivia.score[message.author]++
     }
-    triviaAskQuestion(currentTrivia);
+    triviaAskQuestion();
 };
 
-let triviaAskQuestion = function(trivia) {
+/**
+ * loads the next question into the trivia object
+ */
+let triviaAskQuestion = function() {
 
         //load next question
-        let currentQuestionID = trivia.questionOrder[trivia.currentQuestionNumber];
-        if (trivia.currentQuestionNumber < trivia.triviaLength) {
-            let question = trivia.questions[currentQuestionID];
-            trivia.channel.send((trivia.currentQuestionNumber + 1).toString() + ". " + question.q);
+        let currentQuestionID = currentTrivia.questionOrder[currentTrivia.currentQuestionNumber];
+        if (currentTrivia.currentQuestionNumber < currentTrivia.triviaLength) {
+            let question = currentTrivia.questions[currentQuestionID];
+            currentTrivia.channel.send((currentTrivia.currentQuestionNumber + 1).toString() + ". " + question.q);
             currentTrivia['currentAnswer'] = question.a;
         } else {
-            triviaFinished(trivia);
+            triviaFinished();
             //if no more questions
             currentTrivia['currentAnswer'] = undefined
         }
 };
 
-let triviaFinished = function (trivia){
+/**
+ * processes the score when all questions are answered
+ */
+let triviaFinished = function (){
     //create array of sorted users by points
     let sortable = [];
-    for (let user in trivia.score) {
-        sortable.push([user, trivia.score[user]]);
+    for (let user in currentTrivia.score) {
+        sortable.push([user, currentTrivia.score[user]]);
     }
     sortable.sort(function(a, b) {
         return a[1] - b[1];
@@ -122,11 +155,15 @@ let triviaFinished = function (trivia){
     let winner = sortable[0][0];
     let winnerScore = sortable[0][1];
 
-    trivia.channel.send(winner + " has won the trivia with a score of " + winnerScore.toString() +"! They have won " + (100*trivia.triviaLength).toString() + " points");
-    addPoints.addPoints(winner,(100*trivia.triviaLength))
+    currentTrivia.channel.send(winner + " has won the trivia with a score of " + winnerScore.toString() +"! They have won " + (100*currentTrivia.triviaLength).toString() + " points");
+    addPoints.addPoints(winner,(100*currentTrivia.triviaLength))
 
 };
 
+/**
+ * disables the trivia object
+ * @param message
+ */
 let triviaStop = function(message){
     if (currentTrivia !== undefined) {
         message.channel.send("Stopping trivia...");
@@ -136,10 +173,20 @@ let triviaStop = function(message){
     }
 };
 
+/**
+ * checks the message provided for a correct answer to the current trivia question
+ * @param message - the message which is to be checked for the answer
+ * @returns {boolean} - if the correct answer was provided in the message
+ */
 let triviaCheckAnswer = function(message){
     return (currentTrivia !== undefined && currentTrivia.currentAnswer !== undefined && currentTrivia.currentAnswer.includes(message.content.toLowerCase()))
 };
 
+/**
+ * shuffles a provided array
+ * @param array
+ * @returns {*} - array that is shuffled
+ */
 let shuffle = function(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -159,13 +206,10 @@ let shuffle = function(array) {
     return array;
 };
 
-exports.triviaStop = triviaStop;
-exports.triviaGet = triviaGet;
-exports.triviaAskQuestion = triviaAskQuestion;
+exports.triviaProcessor = triviaProcessor;
 exports.triviaCorrectQuestion = triviaCorrectQuestion;
-exports.triviaStart = triviaStart;
 exports.triviaCheck = triviaCheckAnswer;
-exports.triviaObj = currentTrivia;
+
 
     // Allow reading of !skip to skip questions and !stop to stop the trivia, disable other trivias from beginning in the mean time
 

@@ -36,11 +36,8 @@ module.exports = (client, message) => {
         return points(message)
 
     } else if (checkCommand(message, 'trivia')){
-        if (checkCommand(message, 'trivia stop')){
-            trivia.triviaStop(message);
-        } else {
-            trivia.triviaStart(message);
-        }
+        trivia.triviaProcessor(message)
+
     } else if (trivia.triviaCheck(message)){
         trivia.triviaCorrectQuestion(message);
 
