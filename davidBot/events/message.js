@@ -8,12 +8,7 @@ const points = require('../commands/points');
 const is = require('../commands/is');
 const roll = require('../commands/roll');
 const jason = require('../commands/jason');
-
-// promises
-const getTriviaFiles = require('../scripts/getTriviaFiles');
-
-let currentTrivia;
-let currentAnswer;
+const tick = require('../commands/tick');
 
 module.exports = (client, message) => {
     if (checkCommand(message, 'ping')) {
@@ -32,7 +27,7 @@ module.exports = (client, message) => {
         return roll(message)
 
     } else if (checkCommand(message, 'jason')) {
-            return jason(message)
+        return jason(message)
 
     } else if (checkCommand(message, 'gamble')) {
         return gamble(message)
@@ -41,33 +36,21 @@ module.exports = (client, message) => {
         return points(message)
 
     } else if (checkCommand(message, 'trivia')){
-        if (checkCommand(message, 'trivia stop') && currentTrivia !== undefined){
-            currentTrivia = trivia.triviaStop(message);
+        if (checkCommand(message, 'trivia stop')){
+            trivia.triviaStop(message);
         } else {
-            getTriviaFiles.triviaPromise
-                .then(function (triviaFiles) {
-                    currentTrivia = trivia.triviaGet(message, triviaFiles);
-                })
-                .then(function () {
-                    if (currentTrivia !== undefined) {
-                        currentTrivia.currentAnswer = trivia.triviaAskQuestion(currentTrivia);
-                    }
-                })
+            trivia.triviaStart(message);
         }
-
-    } else if (currentTrivia !== undefined && currentTrivia.currentAnswer.includes(message.content.toLowerCase())){
-
-        currentTrivia = trivia.triviaCorrectQuestion(message, currentTrivia);
-        if (currentTrivia.currentAnswer === undefined){
-            currentTrivia = undefined;
-        }
+    } else if (trivia.triviaCheck(message)){
+        trivia.triviaCorrectQuestion(message);
 
     } else if (checkCommand(message, 'status')){
-        console.log(currentTrivia);
-        console.log(currentTrivia.currentAnswer);
+        console.log(trivia.triviaObj);
+
     } else if (message.content === "😠" && message.author.id!=="542098209175240737"){
         message.channel.send("😠")
     }
+
 };
 
 checkCommand = function (message, command) {
