@@ -7,6 +7,7 @@ const gamble = require('../commands/gamble');
 const points = require('../commands/points');
 const is = require('../commands/is');
 const roll = require('../commands/roll');
+const jason = require('../commands/jason');
 
 // promises
 const getTriviaFiles = require('../scripts/getTriviaFiles');
@@ -29,6 +30,9 @@ module.exports = (client, message) => {
 
     } else if (checkCommand(message, 'roll')) {
         return roll(message)
+
+    } else if (checkCommand(message, 'jason')) {
+            return jason(message)
 
     } else if (checkCommand(message, 'gamble')) {
         return gamble(message)
