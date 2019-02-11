@@ -1,6 +1,6 @@
 ﻿const addPoints = require('../scripts/addPoints')
 
-let triviaGetPromise = function(message, triviaFiles) {
+let triviaGet = function(message, triviaFiles) {
 
         let command = message.content.split(" ");
         // If trivia message is only one sent, return a list of all trivias
@@ -62,9 +62,32 @@ let triviaCorrectQuestion = function(message, trivia) {
     } else {
         trivia.score[message.author]++
     }
+
+    trivia['currentAnswer'] = triviaAskQuestion(trivia);
     return trivia
 
 };
+
+
+let triviaAskQuestion = function(trivia) {
+    if (trivia !== undefined) {
+
+        //load next question
+        let currentQuestionID = trivia.questionOrder[trivia.currentQuestionNumber];
+        if (trivia.currentQuestionNumber < trivia.triviaLength) {
+            let question = trivia.questions[currentQuestionID];
+            trivia.channel.send((trivia.currentQuestionNumber + 1).toString() + ". " + question.q);
+            return question.a;
+        } else {
+            triviaFinished(trivia);
+            //if no more questions
+            return undefined
+        }
+    }
+
+
+};
+
 
 let triviaFinished = function (trivia){
     //create array of sorted users by points
@@ -83,25 +106,6 @@ let triviaFinished = function (trivia){
 
     trivia.channel.send(winner + " has won the trivia with a score of " + winnerScore.toString() +"! They have won " + (100*trivia.triviaLength).toString() + " points");
     addPoints.addPoints(winner,(100*trivia.triviaLength))
-
-};
-
-let triviaAskQuestion = function(trivia) {
-    if (trivia !== undefined) {
-
-        //load next question
-        let currentQuestionID = trivia.questionOrder[trivia.currentQuestionNumber];
-        if (trivia.currentQuestionNumber < trivia.triviaLength) {
-            let question = trivia.questions[currentQuestionID];
-            trivia.channel.send((trivia.currentQuestionNumber + 1).toString() + ". " + question.q);
-            return question.a;
-        } else {
-            triviaFinished(trivia);
-            //if no more questions
-            return undefined
-        }
-    }
-
 
 };
 
@@ -125,7 +129,7 @@ let shuffle = function(array) {
     return array;
 };
 
-exports.triviaGetPromise = triviaGetPromise;
+exports.triviaGet = triviaGet;
 exports.triviaAskQuestion = triviaAskQuestion;
 exports.triviaCorrectQuestion = triviaCorrectQuestion;
 

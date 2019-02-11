@@ -16,7 +16,6 @@ let currentAnswer;
 
 module.exports = (client, message) => {
 
-
     if (checkCommand(message, 'ping')) {
         return ping(message)
     } else if (checkCommand(message, "is")||checkCommand(message, "should")||checkCommand(message, "would")||checkCommand(message, "could")) {
@@ -39,15 +38,17 @@ module.exports = (client, message) => {
         } else {
             getTriviaFiles.triviaPromise
                 .then(function (triviaFiles) {
-                    currentTrivia = trivia.triviaGetPromise(message, triviaFiles);
+                    currentTrivia = trivia.triviaGet(message, triviaFiles);
                 })
                 .then(function (){
                     currentAnswer = trivia.triviaAskQuestion(currentTrivia);
                 })
         }
     } else if (currentTrivia !== undefined && currentAnswer.includes(message.content.toLowerCase())){
-        currentTrivia = trivia.triviaCorrectQuestion(message,currentTrivia);
-        currentAnswer = trivia.triviaAskQuestion(message, currentTrivia);
+
+        currentTrivia = trivia.triviaCorrectQuestion(message, currentTrivia);
+        currentAnswer = currentTrivia.currentAnswer;
+
 
         if (currentAnswer === undefined){
             currentTrivia = undefined;
