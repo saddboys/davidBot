@@ -10,13 +10,29 @@ let currentTrivia;
 let triviaProcessor = function(message){
     if (message.content.startsWith('!trivia stop')){
         triviaStop(message);
-    } else {
+    } else if (message.content.startsWith('!trivia score')) {
+        triviaScore(message);
+    } else{
         triviaStart(message);
     }
 };
 
-let triviaScore = function(){
-
+/**
+ * Sends the current scores to the channel which requested them
+ */
+let triviaScore = function(message){
+    if (currentTrivia !== undefined) {
+        let reply = "The current trivia scoreboard: \n";
+        let sortable = sort(currentTrivia.score);
+        for (let i = 0; i < currentTrivia.players; i++) {
+            let user = sortable[i][0];
+            let userScore = sortable[i][1];
+            reply = reply + (i+1).toString() + ". " + user + ": " + userScore + "\n"
+        }
+        message.channel.send(reply)
+    } else {
+        message.channel.send("There is no trivia in progress!")
+    }
 };
 
 /**
@@ -95,6 +111,7 @@ let triviaGet = function(message) {
     trivia['questionOrder'] = shuffle(questionOrder);
     trivia['channel'] = message.channel;
     trivia['score']={};
+    trivia['players'] = 0;
 
     //get question length
     if ((command.length >= 3) && (!isNaN(command[2])) && (parseInt(command[2]) <= trivia.questionOrder.length)){
@@ -128,6 +145,7 @@ let triviaCorrectQuestion = function(message) {
     if (currentTrivia.score[message.author] === undefined) {
         currentTrivia.score[message.author] = 1;
         currentTrivia.score[message.author]['user'] = message.author;
+        currentTrivia.players++;
 
     } else {
         currentTrivia.score[message.author]++
@@ -158,13 +176,7 @@ let triviaAskQuestion = function() {
  */
 let triviaFinished = function (){
     //create array of sorted users by points
-    let sortable = [];
-    for (let user in currentTrivia.score) {
-        sortable.push([user, currentTrivia.score[user]]);
-    }
-    sortable.sort(function(a, b) {
-        return a[1] - b[1];
-    });
+    let sortable = sort(currentTrivia.score);
 
     //get the winner/2nd/3rd place
     let winner = sortable[0][0];
@@ -219,6 +231,25 @@ let shuffle = function(array) {
     }
 
     return array;
+};
+
+/**
+ * Sorts the scores which are input
+ * @param scores - score object
+ * @returns {Array} - array of sorted scores
+ */
+let sort = function(scores){
+    //create array of sorted users by points
+    let sortable = [];
+    for (let user in scores) {
+        sortable.push([user, scores[user]]);
+    }
+
+    sortable.sort(function(a, b) {
+        return a[1] - b[1];
+    });
+
+    return sortable
 };
 
 exports.triviaProcessor = triviaProcessor;
