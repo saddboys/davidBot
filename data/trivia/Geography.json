@@ -1,0 +1,32 @@
+{
+  "questions": [
+    {
+      "q": "What is the name of the large island that lies to the south of Italy",
+      "a": [ "sicily" ]
+    },
+    {
+      "q": "What is the name of territory on which Sweden, Denmark, Finland and Norway lie?",
+      "a": [ "scandinavia" ]
+    },
+    {
+      "q": "What mountain range separates India and China",
+      "a": [ "himalaya", "himalayas" ]
+    },
+    {
+      "q": "What mountain range in Russia is sometimes viewed to separate Europe and Asia",
+      "a": [ "ural", "urals" ]
+    },
+    {
+      "q": "Name one country which occupies the low countries?",
+      "a": [ "netherlands", "the netherlands", "belgium", "luxembourg" ]
+    },
+    {
+      "q": "What is the sea that separates Europe from Africa",
+      "a": [ "mediterranean","the mediterranean", "mediterranean sea"]
+    },
+    {
+      "q": "What is the name of the territory which makes up the heartland of Turkey?",
+      "a": [ "anatolia", "anatolian peninsula"]
+    }
+  ]
+}

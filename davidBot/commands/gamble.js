@@ -11,7 +11,7 @@ module.exports = message => {
     let command = message.content.split(" ");
 
     // setup slots
-    let slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":boom:", ":fire:", ":punch:", ":seven:", ":fleur_de_lis:"];
+    let slots = [":skull:",":spades:", ":hearts:" ,":diamonds:", ":clubs:", ":fire:", ":seven:", ":fleur_de_lis:"];
     if (typeof pointsObj.users[message.author] === 'undefined' || pointsObj.users[message.author] === 0) {
         // if no points, then setup point obj
 
@@ -43,7 +43,7 @@ module.exports = message => {
                     gottenPoints = gambledPoints*10;
                     reply = "You have rolled [" + gottenSlots.toString() +"]: Jackpot!! You have gotten " + (gottenPoints).toString() +" points."
                 } else if (gottenSlots[0] === gottenSlots[1] || gottenSlots[1] === gottenSlots[2] || gottenSlots[2] === gottenSlots[0]){
-                    gottenPoints = gambledPoints*3;
+                    gottenPoints = gambledPoints*2;
                     reply = "You have rolled [" + gottenSlots.toString() +"]: You have gotten " + (gottenPoints).toString() +" points."
                 } else {
                     gottenPoints = gambledPoints*-1;
@@ -71,10 +71,4 @@ let slotMachine = function(slots){
     gottenSlots[2] = slots[rng3];
     return gottenSlots;
 
-};
-
-let savePointsData = function(pointsObj){
-    let pointsData = JSON.stringify(pointsObj, null, " ");
-    let filename = './../data/points.json';
-    fs.writeFile(filename, pointsData, (err) => { if (err) throw err; });
 };
