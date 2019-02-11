@@ -1,6 +1,6 @@
 ﻿const addPoints = require('../scripts/addPoints');
 const fs = require('fs');
-
+const shuffle = require('../scripts/shuffle');
 let currentTrivia;
 
 /**
@@ -206,30 +206,6 @@ let triviaStop = function(message){
  */
 let triviaCheckAnswer = function(message){
     return (currentTrivia !== undefined && currentTrivia.currentAnswer !== undefined && currentTrivia.currentAnswer.includes(message.content.toLowerCase()))
-};
-
-/**
- * shuffles a provided array
- * @param array
- * @returns {*} - array that is shuffled
- */
-let shuffle = function(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
 };
 
 /**

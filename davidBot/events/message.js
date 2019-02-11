@@ -8,44 +8,47 @@ const points = require('../commands/points');
 const is = require('../commands/is');
 const roll = require('../commands/roll');
 const jason = require('../commands/jason');
-const tick = require('../commands/tick');
 
 module.exports = (client, message) => {
-    if (checkCommand(message, 'ping')) {
-        return ping(message)
+    //complex commands
+    if (checkCommand(message, 'trivia')) {
+        trivia.triviaProcessor(message);
+    //simple commands
+    } else if (message.author.id !== client.user.id && message.content.startsWith("!")) {
+        if (checkCommand(message, 'ping')) {
+            return ping(message)
 
-    } else if (checkCommand(message, "is")||checkCommand(message, "should")||checkCommand(message, "would")||checkCommand(message, "could")) {
-        return is(message)
+        } else if (checkCommand(message, "is") || checkCommand(message, "should") || checkCommand(message, "would") || checkCommand(message, "could")) {
+            return is(message)
 
-    } else if (checkCommand(message, 'google')) {
-        return google(message)
+        } else if (checkCommand(message, 'google')) {
+            return google(message)
 
-    } else if (checkCommand(message, 'commands')) {
-        return commands(message)
+        } else if (checkCommand(message, 'commands')) {
+            return commands(message)
 
-    } else if (checkCommand(message, 'roll')) {
-        return roll(message)
+        } else if (checkCommand(message, 'roll')) {
+            return roll(message)
 
-    } else if (checkCommand(message, 'jason')) {
-        return jason(message)
+        } else if (checkCommand(message, 'jason')) {
+            return jason(message)
 
-    } else if (checkCommand(message, 'gamble')) {
-        return gamble(message)
+        } else if (checkCommand(message, 'gamble')) {
+            return gamble(message)
 
-    } else if (checkCommand(message, 'points')){
-        return points(message)
+        } else if (checkCommand(message, 'points')) {
+            return points(message)
 
-    } else if (checkCommand(message, 'trivia')){
-        trivia.triviaProcessor(message)
-
-    } else if (trivia.triviaCheck(message)){
-        trivia.triviaCorrectQuestion(message);
-
-    } else if (checkCommand(message, 'status')){
-        console.log(trivia.triviaObj);
-
-    } else if (message.content === "😠" && message.author.id!=="542098209175240737"){
-        message.channel.send("😠")
+        }
+    //non commands
+    } else if (message.author.id !== client.user.id) {
+        if (message.content === "😠") {
+            message.channel.send("😠")
+        } else if (message.content === "😡"){
+            message.channel.send("😡")
+        } else if (trivia.triviaCheck(message)) {
+            trivia.triviaCorrectQuestion(message);
+        }
     }
 
 };
