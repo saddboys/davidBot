@@ -72,7 +72,7 @@ let triviaStart = function(message){
 
 /**
  * A promise which gets all the  files within the trivia promise directory
- * @returns {Promise<any>} - the list of all trivias in the trivia directory
+ * @returns {Promise} - the list of all trivias in the trivia directory
  */
 let triviaPromise = function() {
 
@@ -91,7 +91,6 @@ let triviaPromise = function() {
 /**
  * reads the command given by the trivia to set up the trivia chosen
  * @param message - command provided by the user
- * @param triviaFiles - list of all trivia files within the database
  * @returns {*}
  */
 let triviaGet = function(message) {
