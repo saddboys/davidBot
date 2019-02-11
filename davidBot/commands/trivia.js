@@ -3,6 +3,10 @@ const fs = require('fs');
 
 let currentTrivia;
 
+/**
+ * processes the incoming trivia command to choose which function to execute
+ * @param message
+ */
 let triviaProcessor = function(message){
     if (message.content.startsWith('!trivia stop')){
         triviaStop(message);
@@ -209,19 +213,5 @@ let shuffle = function(array) {
 exports.triviaProcessor = triviaProcessor;
 exports.triviaCorrectQuestion = triviaCorrectQuestion;
 exports.triviaCheck = triviaCheckAnswer;
-
-
-    // Allow reading of !skip to skip questions and !stop to stop the trivia, disable other trivias from beginning in the mean time
-
-    // If not, Check message to see which trivia is selected
-
-    // Read all files in data/trivia to find the trivia selected
-
-    // If given trivia is not available return the list again
-
-    // If trivia does exist, load the trivia object
-
-    // If someone gets it correct, add the correct answer to a list and give them a point
-
 
 
