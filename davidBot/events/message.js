@@ -8,6 +8,7 @@ const points = require('../commands/points');
 const is = require('../commands/is');
 const roll = require('../commands/roll');
 const jason = require('../commands/jason');
+const cards = require('../commands/cards');
 
 module.exports = (client, message) => {
 
@@ -15,9 +16,11 @@ module.exports = (client, message) => {
     //complex commands
     if (checkCommand(message, 'trivia')) {
         trivia.triviaProcessor(message);
+
     //simple commands
     } else if (message.author.id !== client.user.id && message.content.startsWith("!")) {
         if (checkCommand(message, 'ping')) {
+            console.log("pinged");
             return ping(message)
 
         } else if (checkCommand(message, "is") || checkCommand(message, "should") || checkCommand(message, "would") || checkCommand(message, "could")) {
@@ -41,7 +44,11 @@ module.exports = (client, message) => {
         } else if (checkCommand(message, 'points')) {
             return points(message)
 
+        } else if (checkCommand(message, 'cards')){
+            cards.cardsProcessor(message)
+
         }
+
     //non commands
     } else if (message.author.id !== client.user.id) {
         if (message.content === "😠") {
