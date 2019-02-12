@@ -8,5 +8,5 @@ module.exports =  message => {
     let rng1 = Math.floor((Math.random() * rank.length));
     let rng2 = Math.floor((Math.random() * suit.length));
 
-    return message.channel.send(`rank[rng1] "of" suit[rng2]`)
+    message.channel.send(rank[rng1] + " of " + suit[rng2])
 };

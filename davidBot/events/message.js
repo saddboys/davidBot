@@ -10,6 +10,8 @@ const roll = require('../commands/roll');
 const jason = require('../commands/jason');
 
 module.exports = (client, message) => {
+
+    console.log(message.content);
     //complex commands
     if (checkCommand(message, 'trivia')) {
         trivia.triviaProcessor(message);

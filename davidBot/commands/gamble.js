@@ -43,10 +43,10 @@
                 let gottenSlots = slotMachine(slots);
 
                 if( gottenSlots[0] === gottenSlots[1] && gottenSlots[1] === gottenSlots[2]){
-                    gottenPoints = gambledPoints*10;
+                    gottenPoints = gambledPoints*100;
                     reply = "You have rolled [" + gottenSlots.toString() +"]: Jackpot!! You have gotten " + (gottenPoints).toString() +" points."
                 } else if (gottenSlots[0] === gottenSlots[1] || gottenSlots[1] === gottenSlots[2] || gottenSlots[2] === gottenSlots[0]){
-                    gottenPoints = gambledPoints*2;
+                    gottenPoints = gambledPoints;
                     reply = "You have rolled [" + gottenSlots.toString() +"]: You have gotten " + (gottenPoints).toString() +" points."
                 } else {
                     gottenPoints = gambledPoints*-1;
